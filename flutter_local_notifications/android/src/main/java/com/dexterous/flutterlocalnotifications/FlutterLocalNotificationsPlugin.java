@@ -276,8 +276,12 @@ public class FlutterLocalNotificationsPlugin
     if (VERSION.SDK_INT >= VERSION_CODES.M) {
       flags |= PendingIntent.FLAG_IMMUTABLE;
     }
+
+    Bundle bundle = new Bundle(1);
+    bundle.putInt("android.activity.splashScreenStyle",1);
+
     PendingIntent pendingIntent =
-        PendingIntent.getActivity(context, notificationDetails.id, intent, flags);
+        PendingIntent.getActivity(context, notificationDetails.id, intent, flags, bundle);
     DefaultStyleInformation defaultStyleInformation =
         (DefaultStyleInformation) notificationDetails.styleInformation;
     NotificationCompat.Builder builder =
@@ -333,10 +337,11 @@ public class FlutterLocalNotificationsPlugin
           }
         }
 
+
         @SuppressLint("UnspecifiedImmutableFlag")
         final PendingIntent actionPendingIntent =
             action.showsUserInterface != null && action.showsUserInterface
-                ? PendingIntent.getActivity(context, requestCode++, actionIntent, actionFlags)
+                ? PendingIntent.getActivity(context, requestCode++, actionIntent, actionFlags, bundle)
                 : PendingIntent.getBroadcast(context, requestCode++, actionIntent, actionFlags);
 
         final Spannable actionTitleSpannable = new SpannableString(action.title);
